@@ -1,0 +1,43 @@
+*** Settings ***
+Library    Selenium2Library
+
+*** Variables ***
+${SERVER}    localhost:7272
+${BROWSER}    Chrome
+${WELCOME URL}    https://10.199.66.227/SoftEn2017/group17/WeShare4U/home.php
+${DELAY}    0
+${validusername}    kmcn@gmail.com
+${validPass}    1234
+
+
+
+*** Testcases ***
+Open Home Page :
+    Open Browser    ${WELCOME URL}    ${BROWSER}
+    Set Selenium Speed    ${DELAY}
+
+Open Page Product :
+    Click Element   login
+    Input Text    username    ${validusername}
+    Input Text    password    ${validPass}
+    Click Button    loginsubmit
+    Click Button    id=ineed
+
+
+Check List :
+
+    Page Should Contain Element     id=pdetail
+  
+    
+Click Button :
+
+    Click Element    id=n1
+    Location Should Be    https://10.199.66.227/SoftEn2017/group17/WeShare4U/home.php
+    Set Selenium Speed    ${DELAY}
+
+
+
+
+
+
+    

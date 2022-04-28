@@ -1,0 +1,67 @@
+﻿*** Settings ***
+Library    Selenium2Library
+
+*** Variables ***
+${SERVER}    https://10.199.66.227/SoftEn2017/group17/WeShare4U/index.php
+${Titlename_news}	โผล่แล้ว ไดร์ฟตัวแรกของโลกที่จะทำให้เครื่องคอมฯ ของคุณ สามารถเล่นแผ่นหนัง 4K
+${Author}			Suttida 
+${Date_news}		2017-03-07
+${Content_news}		แผ่นหนังแบบความละเอียดสูง
+
+${Titlename_ann}	รายชื่อผู้บริจาควันในวันที่ 8 มีนาคม 2560
+${Date_ann}			2017-03-08   
+${Content_ann}		บริษัท
+
+${BROWSER}    	Chrome
+
+${DELAY}    0
+
+*** Testcases ***
+
+	
+Open News Page
+    Open Browser    ${SERVER}    ${BROWSER}
+	
+Click more news	
+    Click Element    s1
+	Page Should Contain Element     id=26
+	Page Should Contain Element     id=25
+	Page Should Contain Element     id=24
+	Page Should Contain Element     id=23
+	Page Should Contain Element     id=22
+	Page Should Contain Element     id=20
+	Page Should Contain Element     id=19
+	Page Should Contain Element     id=18
+	Page Should Contain Element     id=17
+	Page Should Contain Element     id=16
+
+
+Check page News detail	
+	Click Link   				id=21
+	Page Should Contain         ${Titlename_news}
+	Page Should Contain 		${Author}
+	Page Should Contain			${Date_news}	
+	Page Should Contain 		${Content_news}
+
+Click more Announcements	
+    Open Browser    ${SERVER}    ${BROWSER}
+    Click Element    s2
+	Page Should Contain Element     id=17
+	Page Should Contain Element     id=16
+	Page Should Contain Element     id=15
+	Page Should Contain Element     id=14
+	Page Should Contain Element     id=13
+	Page Should Contain Element     id=12
+	Page Should Contain Element     id=10
+	Page Should Contain Element     id=9
+	Page Should Contain Element     id=8
+	Page Should Contain Element     id=7
+	
+Check page Announcements detail		
+	Click Link 					default=announcementdetail.php?annid=15
+	Page Should Contain         ${Titlename_ann}
+	Page Should Contain			${Date_ann}	
+	Page Should Contain 		${Content_ann}
+	Page Should Contain 		${Author}
+
+

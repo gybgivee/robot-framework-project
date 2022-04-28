@@ -1,0 +1,85 @@
+*** Settings ***
+Library    Selenium2Library
+
+*** Variables ***
+${SERVER}    http://localhost/Weshare4u/index.php
+${BROWSER}    	Chrome
+${Authen_Capsha}	*การยืนยันถูกต้อง
+${validUsername}    We@gmail.com
+${validPass}    12345
+${DELAY}    	0
+${DELAY_Capsha}    	5
+
+
+${Name}         ชื่อสินค้า
+${Amount}    	จำนวนสินค้า
+${Size}         ขนาด
+${Weight}       น้ำหนัก
+${Detail}       รายละเอียด
+${MoreDetail}   รายละเอียดเพิ่มเติม
+${SendBy}		วิธีการจัดส่ง
+
+${Name_Cart}			HP 280 G1 
+${Amount_Cart}			4  เครื่อง 
+${validAmount}  		2
+${invalidAmount}  		0
+${Send}  				รับที่องค์กร
+
+${Topic1}		ตะกร้าสินค้า
+${Topic2}		Product
+${Topic3}		Name
+${Topic4}		Amount
+${Topic5}		Edit
+
+${Form_edit}		http://localhost/Weshare4u/productdetail.php?item_id=9
+
+*** Test Cases ***
+
+LOGIN
+    Open Browser    ${SERVER}    ${BROWSER}
+    Click Button      blogin
+	
+Valid username and Password
+    Input Text    username    ${validUsername}
+    Input Text    password    ${validPass}    
+    Set Selenium Speed    	  ${DELAY_Capsha}
+	Click Button  	Check
+	Page Should Contain    	  ${Authen_Capsha}
+	Set Selenium Speed    	  ${DELAY}
+	Click Button    loginDi
+	Maximize Browser Window
+	
+Select Donate Type
+    Click Button    ineed
+
+Check Product Detail
+	Click Link 		default=productdetail.php?item_id=9
+	Page Should Contain    	  ${Name}
+	Page Should Contain    	  ${Amount}
+	Input Text    	item_amount    ${validAmount}    
+	Page Should Contain    	  ${Size}
+	Page Should Contain    	  ${Detail}
+	Page Should Contain    	  ${MoreDetail}
+
+	
+Click Button I need them Fail 
+	Click Button    submit
+
+I need them Success 
+	Page Should Contain    	  ${Name_Cart}
+	Click Element 			  id=cartbut
+
+Detail Basket 
+	Click Element 			  id=viewcart
+    Wait Until Page Contains	${Topic1}
+	Page Should Contain    	  ${Topic2}
+	Page Should Contain    	  ${Topic3}
+	Page Should Contain    	  ${Topic4}
+	Page Should Contain    	  ${Topic5}
+    Page Should Contain		  ${SendBy}
+    Page Should Contain		  ${Send}	
+	Page Should Contain    	  ${Name_Cart}
+		
+Edit amount item in Basket 
+	Click Element 			  id=editV
+    Location Should Contain    	${Form_edit}

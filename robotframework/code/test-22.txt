@@ -1,0 +1,103 @@
+**** Settings ***
+Library    Selenium2Library
+
+*** Variables ***
+${SERVER}    http://localhost/Weshare4u/index.php
+${BROWSER}    	Chrome
+${Authen_Capsha}	*การยืนยันถูกต้อง
+${validUsername}    We@gmail.com
+${validPass}    12345
+${DELAY}    	0
+${DELAY_Capsha}    	5
+
+
+${Name}         ชื่อสินค้า
+${Amount}    	จำนวนสินค้า
+${Size}         ขนาด
+${Weight}       น้ำหนัก
+${Detail}       รายละเอียด
+${MoreDetail}   รายละเอียดเพิ่มเติม
+${SendBy}		วิธีการจัดส่ง
+
+${Name_Cart1}			Acer J2900
+${Name_Cart2}			DELL OptiPlex 3046
+${Name_Cart3}			DELL (MT030)
+${Amount_Cart}			4  เครื่อง 
+${validAmount}  		1
+${invalidAmount}  		0
+${Total}				Total
+${Baht}					BAHT
+
+${Send_office}  			รับที่องค์กร
+${Send_post}  				รับทางไปรษณีย์
+${Send_meet}  				รับที่จุดนัดพบ
+
+${Topic1}		ตะกร้าสินค้า
+${Topic2}		Product
+${Topic3}		Name
+${Topic4}		Amount
+${Topic5}		Edit
+
+*** Test Cases ***
+
+LOGIN
+    Open Browser    ${SERVER}    ${BROWSER}
+    Click Button      blogin
+	
+Valid username and Password
+    Input Text    username    ${validUsername}
+    Input Text    password    ${validPass}    
+    Set Selenium Speed    	  ${DELAY_Capsha}
+	Click Button  	Check
+	Page Should Contain    	  ${Authen_Capsha}
+	Set Selenium Speed    	  ${DELAY}
+	Click Button    loginDi
+	Maximize Browser Window
+	
+Select Donate Type
+    Click Button    ineed
+
+Check Product Detail
+	Click Link 		default=productdetail.php?item_id=2
+	Page Should Contain    	  ${Name}
+	Page Should Contain    	  ${Amount}
+	Input Text    	item_amount    ${validAmount}    
+	Page Should Contain    	  ${Size}
+	Page Should Contain    	  ${Detail}
+	Page Should Contain    	  ${MoreDetail}
+
+	
+Click Button I need them Fail 
+	Click Button    submit
+
+I need them Success 
+	Go To		  http://localhost/Weshare4u/product.php
+	Click Link 		default=productdetail.php?item_id=3
+	Input Text    	item_amount    ${validAmount}    
+	Click Button    submit
+	Go To		  http://localhost/Weshare4u/product.php
+	Click Link 		default=productdetail.php?item_id=4
+	Input Text    	item_amount    ${validAmount}   
+	Click Button    submit
+	Page Should Contain    	  ${Name_Cart3}
+	Click Element 			  id=cartbut
+
+Detail Basket 
+	Click Element 			  id=viewcart
+    Wait Until Page Contains	${Topic1}
+	Page Should Contain    	  ${Topic2}
+	Page Should Contain    	  ${Topic3}
+	Page Should Contain    	  ${Topic4}
+	Page Should Contain    	  ${Topic5}
+    Page Should Contain		  ${SendBy}
+
+
+Detail Shipping 
+    Page Should Contain		  ${Send_office}	
+    Page Should Contain		  ${Send_post}	
+    Page Should Contain		  ${Send_meet}	
+	Page Should Contain    	  ${Name_Cart3}
+	Page Should Contain    	  ${Total}
+	
+All cost shipping 
+	Page Should Contain    	  ${Baht}

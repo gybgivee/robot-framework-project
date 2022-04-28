@@ -1,0 +1,74 @@
+*** Settings ***
+Library    Selenium2Library
+
+*** Variables ***
+${SERVER}    https://10.199.66.227/SoftEn2017/group17/WeShare4U/index.php
+${BROWSER}    	Chrome
+${Authen_Capsha}	*การยืนยันถูกต้อง
+${validUsername}    We@gmail.com
+${validPass}    12345
+${DELAY}    	0
+${DELAY_Capsha}    	5
+
+${Name}         ชื่อสินค้า
+${Amount}    	จำนวนสินค้า
+${Size}         ขนาด
+${Weight}       น้ำหนัก
+${Detail}       รายละเอียด
+${MoreDetail}   รายละเอียดเพิ่มเติม
+
+${Name_data}         Acer TC703 PEN J2900
+${Amount_data}    	 1
+${Size_data}         50 x 40 x 8
+${Weight_data}       5 kg.
+${Detail_data}       ACER TC703 PEN 
+${MoreDetail_data}		ไม่มีเมาส์ ไม่มีคีย์บอร์ด
+
+${Name_list1}         Acer TC703 PEN J2900
+${Name_list2}         HP 280 G1
+${Name_list3}         HP Pavilion Desktop - 510-p031l
+${Name_list4}         HP ProOne 400 G2 20-inch Non-Touch All-in-One PC-T8V57PA
+
+*** Test Cases ***
+
+LOGIN
+    Open Browser    ${SERVER}    ${BROWSER}
+    Click Button      blogin
+	
+Valid username and Password
+    Input Text    username    ${validUsername}
+    Input Text    password    ${validPass}    
+    Set Selenium Speed    	  ${DELAY_Capsha}
+	Click Button  	Check
+	Page Should Contain    	  ${Authen_Capsha}
+	Set Selenium Speed    	  ${DELAY}
+	Click Button    loginDi
+	Maximize Browser Window
+	
+Select Donate Type
+    Click Button    ineed
+	Click Link 		default=productdetail.php?item_id=2
+	
+Check List of Product Detail in Each Row
+	Page Should Contain       ${Name_list1}
+	Page Should Contain       ${Name_list2}
+	Page Should Contain       ${Name_list3}
+	Page Should Contain       ${Name_list4}
+	
+Check Product Detail
+	Page Should Contain    	  ${Name}
+	Page Should Contain    	  ${Amount}
+	Page Should Contain    	  ${Size}
+	Page Should Contain    	  ${Detail}
+	Page Should Contain    	  ${MoreDetail}
+	
+Check Data in Product Detail
+	Page Should Contain    	  ${Name_data}
+	Page Should Contain    	  ${Amount_data}
+	Page Should Contain    	  ${Size_data}
+	Page Should Contain    	  ${Detail_data}
+	Page Should Contain    	  ${MoreDetail_data}
+Check List item about
+	Page Should Contain       ${Name_list1}
+	Page Should Contain       ${Name_list2}	
+*** Keywords ***

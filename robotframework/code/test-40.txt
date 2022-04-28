@@ -1,0 +1,166 @@
+*** Settings ***
+Library    Selenium2Library
+
+*** Variables ***
+${SERVER}    https://10.199.66.227/SoftEn2017/group17/WeShare4U/index.php
+${AddDONATE}	https://10.199.66.227/SoftEn2017/group17/WeShare4U/donatetype.php
+${BROWSER}    	Chrome
+${Authen_Capsha}	*การยืนยันถูกต้อง
+${validUsername}    We@gmail.com
+${validPass}    12345
+${DELAY}    	0
+${DELAY_Capsha}    	5
+${DELAY_Choose}    	5
+
+${meetAddress}		มหาวิทยาลัยขอนแก่น
+
+${validName1}		DELL XPS 271
+${validName2}		DELL XPS 272
+${validName3}		DELL XPS 273
+
+${validDetail}		Dell XPS 27 จะมีหน้าจอเป็นแบบทัชสกรีน 27 นิ้ว ความละเอียดหน้าจอ 4K แถม Dell ยังได้เคลมอีกว่าการแสดงผลของสีครอบคลุม Adobe RGB 100% ส่วนสเปคอื่นๆ ภายในจะคล้ายๆ กับตัว HP ข้างต้นคือใช้ CPU เป็น Intel Core i5 ใส่ Ram 8 GB ความจุ Harddisk 1 TB สามารถใส่ SSD เพิ่มได้ แถมมีพอร์ท Thunderbolt 3 มาให้ด้วย 
+${validSize}		39 x 37 x 17
+${validWeight}		3 
+${validAno}			ไม่มีเมาส์ ไม่มีคีย์บอร์ด
+${validAmount}		1
+
+${invalidName}
+${invalidDetail}
+${invalidSize}
+${invalidWeight}
+${invalidAno}
+${invalidAmount}
+
+${Name}         ชื่อสินค้า
+${Amount}    	จำนวนสินค้า
+${Size}         ขนาด
+${Weight}       น้ำหนัก
+${Detail}       รายละเอียด
+${MoreDetail}   รายละเอียดเพิ่มเติม
+${SendBy}		วิธีการจัดส่งสินค้า
+
+${SendBy_Post}		รับทางไปรษณีย์
+${SendBy_Office}	รับที่องค์กร
+${SendBy_Meet}		รับที่จุดนัดพบ
+
+*** Test Cases ***
+
+LOGIN
+    Open Browser    ${SERVER}    ${BROWSER}
+    Click Button      blogin
+	
+Valid username and Password
+    Input Text    username    ${validUsername}
+    Input Text    password    ${validPass}    
+    Set Selenium Speed    	  ${DELAY_Capsha}
+	Click Button  	Check
+	Page Should Contain    	  ${Authen_Capsha}
+	Set Selenium Speed    	  ${DELAY}
+	Click Button    loginDi
+	Maximize Browser Window
+	
+Select Donate Type
+    Click Button    ican		    
+	
+
+Invalid name in AddDonateItem
+	Input Text    	name    		${invalidName}
+	Input Text    	detail    		${validDetail}
+	Input Text    	Size    		${validSize}
+	Input Text    	Weight    		${validWeight}
+	Input Text    	anoutherdetail  ${validAno} 
+	Input Text    	amount    		${validAmount}
+	Click Button  	donate
+
+Invalid detail in AddDonateItem
+	Input Text    	name    		${validName1}
+	Input Text    	detail    		${invalidDetail}
+	Input Text    	Size    		${validSize}
+	Input Text    	Weight    		${validWeight}
+	Input Text    	anoutherdetail  ${validAno} 
+	Input Text    	amount    		${validAmount}
+	Click Button  	donate
+
+Invalid Size in AddDonateItem
+	Input Text    	name    		${validName1}
+	Input Text    	detail    		${validDetail}
+	Input Text    	Size    		${invalidSize}
+	Input Text    	Weight    		${validWeight}
+	Input Text    	anoutherdetail  ${validAno} 
+	Input Text    	amount    		${validAmount}
+	Click Button  	donate
+
+Invalid Weight in AddDonateItem
+	Input Text    	name    		${validName1}
+	Input Text    	detail    		${validDetail}
+	Input Text    	Size    		${validSize}
+	Input Text    	Weight    		${invalidWeight}
+	Input Text    	anoutherdetail  ${validAno} 
+	Input Text    	amount    		${validAmount}
+	Click Button  	donate
+
+Invalid AnotherDetail in AddDonateItem
+	Input Text    	name    		${validName1}
+	Input Text    	detail    		${validDetail}
+	Input Text    	Size    		${validSize}
+	Input Text    	Weight    		${validWeight}
+	Input Text    	anoutherdetail  ${invalidAno} 
+	Input Text    	amount    		${validAmount}
+	Click Button  	donate
+	
+Invalid All Data in AddDonateItem
+	Input Text    	name    		${invalidName}
+	Input Text    	detail    		${invalidDetail}
+	Input Text    	Size    		${invalidSize}
+	Input Text    	Weight    		${invalidWeight}
+	Input Text    	anoutherdetail  ${invalidAno} 
+	Input Text    	amount    		${invalidAmount}
+	Click Button  	donate
+	
+Valid All Data in AddDonateItem By PostOffice
+	Input Text    	name    		${validName1}
+	Input Text    	detail    		${validDetail}
+	Input Text    	Size    		${validSize}
+	Input Text    	Weight    		${validWeight}
+	Input Text    	anoutherdetail  ${validAno} 
+	Input Text    	amount    		${validAmount}
+	Click Button  	file
+	Set Selenium Speed    	  ${DELAY_Choose}
+	Select Radio Button		PostType	postget	
+	Set Selenium Speed    	  ${DELAY}
+	Click Button  	donate
+
+Check Topic Product Detail
+	Page Should Contain    	  ${Name}
+	Page Should Contain    	  ${Amount}
+	Page Should Contain    	  ${Size}
+	Page Should Contain    	  ${Detail}
+	Page Should Contain    	  ${MoreDetail}
+    Page Should Contain		  ${SendBy}
+	
+Check Data in Product Detail By PostOffice
+	Page Should Contain    	  ${validName1}
+	Page Should Contain    	  ${validAmount}
+	Page Should Contain    	  ${validSize}
+	Page Should Contain    	  ${validDetail}
+	Page Should Contain    	  ${validAno} 
+	Page Should Contain    	  ${SendBy_Post} 
+	
+Click edit Item
+	Click Button  	btnDonateEdit
+
+Edit Item in Old Form 
+	Select Radio Button		PostType	meet
+	Input Text    	MeetAddress    		${meetAddress}
+	Click Button  	donate
+
+Check Data in Product Detail
+	Page Should Contain    	  ${validName1}
+	Page Should Contain    	  ${validAmount}
+	Page Should Contain    	  ${validSize}
+	Page Should Contain    	  ${validDetail}
+	Page Should Contain    	  ${validAno} 
+	Page Should Contain    	  ${SendBy_Meet}
+	Page Should Contain    	  ${meetAddress}
+
+

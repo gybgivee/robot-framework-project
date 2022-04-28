@@ -1,0 +1,60 @@
+﻿*** Settings ***
+Library    Selenium2Library
+
+*** Variables ***
+${location}    https://10.199.66.227/SoftEn2017/group17/WeShare4U/home.php
+${browser}    Chrome
+${validusername}    kmcn@gmail.com
+${validPass}    1234
+${Invalidusername}    xxx@hotmail.com
+${InvalidPass}    aaaa
+
+*** Test Cases ***
+
+LOGIN
+    Open Browser    ${location}    ${browser}
+    Click Link      login
+
+
+
+Invalid username
+    Input text    username    ${Invalidusername}
+    Input text    password    ${validPass}
+    Click Button    loginsubmit
+    Wait Until Page Contains    *Email or Password ไม่ถูกต้อง กรุณากรอกใหม่
+	
+
+Invalid Password
+    Input text    username    ${validusername}
+    Input text    password    ${InvalidPass}
+    Click Button     loginsubmit
+    Wait Until Page Contains     *Email or Password ไม่ถูกต้อง กรุณากรอกใหม่
+	
+
+Invalid username and Password
+    Input Text    username    ${Invalidusername}
+    Input Text    password    ${InvalidPass}
+    Click Button    loginsubmit
+    Wait Until Page Contains    *Email or Password ไม่ถูกต้อง กรุณากรอกใหม่
+
+Empty username
+    Input Text    password    ${validPass}
+    Click Button    loginsubmit
+    Wait Until Page Contains    *Email or Password ไม่ถูกต้อง กรุณากรอกใหม่
+
+Empty Password
+    Input Text    username    ${Invalidusername}
+    Click Button     loginsubmit
+    Wait Until Page Contains    *Email or Password ไม่ถูกต้อง กรุณากรอกใหม่
+
+Empty username and Password
+    Click Button    loginsubmit
+	Wait Until Page Contains    *Email or Password ไม่ถูกต้อง กรุณากรอกใหม่
+
+Valid username and Password
+    Input Text    username    ${validusername}
+    Input Text    password    ${validPass}
+    Click Button    loginsubmit
+
+
+*** Keywords ***

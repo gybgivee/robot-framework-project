@@ -1,0 +1,119 @@
+﻿*** Settings ***
+Library    Selenium2Library
+
+*** Variables ***
+${SERVER}    https://10.199.66.227/SoftEn2017/group17/WeShare4U/index.php
+${BROWSER}    	Chrome
+
+${Authen_Capsha}	*การยืนยันถูกต้อง
+${Admin_Username}    Admin@gmail.com
+${Admin_Password}    1234
+${DELAY}    	0
+${DELAY_Capsha}    	5
+${DELAY_Choose}    	10
+
+${NewsValidHead}		บริจาคอุปกรณ์คอมพิวเตอร์ให้กับเด็กที่ประสบภัยน้ำท่วมในภาคใต้
+${NewsValidDetail}		การบริจาคสิ่งของและเงินช่วยเหลือประสบภัยน้ำท่วม ยังต้องเดินหน้าต่อเพื่อจะเยียวยาความเสียหาย ที่เกิดขึ้นเป็นวงกว้าง ในวันนี้ยังมีผู้มาบริจาคเงิน และสิ่งของ ร่วมโครงการกับทางเครือเนชั่นอย่างต่อเนื่อง
+${NewsValidName}       ผู้เขียน Kamonchanok
+
+${AnnValidHead}			รายชื่อผู้บริจาควันในวันที่ 11 มีนาคม 2560
+${AnnValidDetail}		1.คณะวิทยาศาสตร์ มหาวิทยาลัยขอนแก่น
+${AnnValidName}		       ผู้เขียน Kamonchanok
+
+${invalidHead}		
+${invalidDetail}		
+${invalidName}
+
+*** Test Cases ***
+
+LOGIN
+    Open Browser    ${SERVER}    ${BROWSER}
+    Click Button      blogin
+	
+Valid Admin username and Password
+    Input Text    username    ${Admin_Username}
+    Input Text    password    ${Admin_Password}    
+    Set Selenium Speed    	  ${DELAY_Capsha}
+	Click Button  	Check
+	Page Should Contain    	  ${Authen_Capsha}
+	Click Button    loginDi
+	
+Invalid All Data in News
+	Set Selenium Speed    	  ${DELAY_Choose}
+	Wait Until Page Contains	หัวข้อข่าว 
+	Input Text    	head    		${invalidHead}
+	Set Selenium Speed    	  ${DELAY}
+	Input Text    	detail    		${invalidDetail}
+	Input Text    	nameAdmin    	${invalidName}
+	Click Button    Add_News
+	Set Selenium Speed    	  ${DELAY}
+	
+Invalid Head in News
+	Input Text    	head    		${invalidHead}
+	Input Text    	detail    		${NewsValidDetail}
+	Input Text    	nameAdmin    	${NewsValidName}
+	Click Button    Add_News
+
+Invalid Detail in News
+	Input Text    	head    		${NewsValidHead}
+	Input Text    	detail    		${invalidDetail}
+	Input Text    	nameAdmin    	${NewsvalidName}
+	Click Button    Add_News
+
+Invalid NameAdmin in News
+	Input Text    	head    		${NewsValidHead}
+	Input Text    	detail    		${NewsValidDetail}
+	Input Text    	nameAdmin    	${invalidName}
+	Click Button    Add_News
+	
+Valid All Data in News
+	Input Text    	head    		${NewsValidHead}
+	Input Text    	detail    		${NewsValidDetail}
+	Input Text    	nameAdmin    	${NewsValidName}
+    Click Button    file
+	Set Selenium Speed    	  ${DELAY_Choose}
+	Click Button    Add_News
+	Wait Until Page Contains	หัวข้อประกาศ
+		
+Invalid All Data in Announcements
+	Input Text    	head    		${invalidHead}
+	Set Selenium Speed    	  ${DELAY}
+	Input Text    	detail    		${invalidDetail}
+	Input Text    	nameAdmin    	${invalidName}
+	Click Button    Add_Anm
+	Set Selenium Speed    	  ${DELAY}
+
+Invalid Head in Announcement
+	Input Text    	head    		${invalidHead}
+	Input Text    	detail    		${AnnValidDetail}
+	Input Text    	nameAdmin    	${AnnValidName}
+	Click Button    Add_Anm
+
+
+Invalid Detail in Announcement
+	Input Text    	head    		${AnnValidHead}
+	Input Text    	detail    		${invalidDetail}
+	Input Text    	nameAdmin    	${AnnValidName}
+	Click Button    Add_Anm
+
+Invalid NameAdmin in Announcement
+	Input Text    	head    		${AnnValidHead}
+	Input Text    	detail    		${AnnValidDetail}
+	Input Text    	nameAdmin    	${invalidName}
+	Click Button    Add_Anm
+	
+Valid All Data in Announcements
+	Input Text    	head    		${AnnValidHead}
+	Input Text    	detail    		${AnnValidDetail}
+	Input Text    	nameAdmin    	${AnnValidName}
+    Click Button    file
+	Set Selenium Speed    	  ${DELAY_Choose}
+	Click Button    Add_Anm
+	Set Selenium Speed    	  ${DELAY}
+
+Check News	
+	Page Should Contain    	  ${NewsValidHead}	
+
+Check Announcements
+	Page Should Contain    	  ${AnnValidHead}
+
